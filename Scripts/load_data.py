@@ -1,3 +1,4 @@
+# %%writefile load_data.py
 import pandas as pd
 import os
 import re
@@ -26,7 +27,7 @@ class TokenizedSentencesDataset:
 
 def get_examples(dataset, split, language=None):
     samples = []
-    
+
     if language:
       dataset = dataset.filter(lambda x: x['Language'] == language)
 
@@ -77,27 +78,27 @@ def get_data(languages):
   test_data_list = []
 
   for lang in languages:
-    train_path = f'../data/Track A/{lang}/{lang}_train.csv'
-    dev_path = f'../data/Track A/{lang}/{lang}_dev_with_labels.csv'
-    test_path = f'../data/Track A/{lang}/{lang}_test.csv'
+    train_path = f'Track A/{lang}/{lang}_train.csv'
+    dev_path = f'Track A/{lang}/{lang}_dev_with_labels.csv'
+    test_path = f'Track A/{lang}/{lang}_test.csv'
 
-    train_data = pd.read_csv(train_path)
-    dev_data = pd.read_csv(dev_path)
-    test_path = pd.read_csv(test_path)
+    train_data = load_data(train_path, language=lang, mode='train')
+    dev_data = load_data(train_path, language=lang, mode='validation')
+    test_path = load_data(train_path, language=lang, mode='test')
 
     train_data_list.append(train_data)
     dev_data_list.append(dev_data)
     test_data_list.append(test_data)
   
-  whole_train_data = pd.concat(train_data_list)
-  whole_dev_data = pd.concat(dev_data_list)
-  whole_test_data = pd.concat(test_data_list)
+  whole_train_data = pd.concat(train_data_list).reset_index().drop('index', axis='columns')
+  whole_dev_data = pd.concat(dev_data_list).reset_index().drop('index', axis='columns')
+  whole_test_data = pd.concat(test_data_list).reset_index().drop('index', axis='columns')
 
   return whole_train_data, whole_dev_data, whole_test_data
 
 if __name__ == '__main__':
-    train_file = '../data/Track A/amh/amh_train.csv'
-    test_file = '../data/Track A/amh/amh_dev_with_labels.csv'
+    train_file = '/content/Semantic_Relatedness_SemEval2024/Track A/amh/amh_train.csv'
+    test_file = '/content/Semantic_Relatedness_SemEval2024/Track A/amh/amh_dev.csv'
 
     train_data = load_data(train_file, 'train')
     test_data = load_data(test_file, mode='test')
