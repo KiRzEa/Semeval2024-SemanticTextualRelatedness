@@ -28,7 +28,6 @@ logger = logging.getLogger(__name__)
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Train a STR end-to-end.")
     parser.add_argument("--model_name", required=True, help="Pretrained model name or path.")
-    parser.add_argument("--dataset_name", required=True, help="Hugging Face dataset name.")
     parser.add_argument("--num_train_epochs", type=int, default=10, help="Number of training epochs.")
     parser.add_argument("--use_fp16", action="store_true", help="Use FP16 for training if supported.")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size for MLM training.")
@@ -41,7 +40,6 @@ if __name__ == '__main__':
     
     # Extract arguments
     model_name = args.model_name
-    dataset_name = args.dataset_name
     num_train_epochs = args.num_train_epochs
     use_fp16 = args.use_fp16
     batch_size = args.batch_size
