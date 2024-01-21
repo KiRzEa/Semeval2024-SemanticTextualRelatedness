@@ -69,7 +69,7 @@ def get_str_data(dataset, language=None):
   dev_samples = get_examples(dataset, split='dev')
   test_samples = get_examples(dataset, split='test')
 
-  return train_samples, test_samples
+  return train_samples, dev_samples, test_samples
 
 def get_data(languages):
   train_data_list = []
