@@ -1,0 +1,6 @@
+datasets==2.16.1
+transformers==4.36.2
+sentence_transformers==2.2.2
+accelerate==0.25.0
+tokenizers==0.15.0
+evaluate==0.4.1
