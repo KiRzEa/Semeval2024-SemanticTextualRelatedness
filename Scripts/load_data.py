@@ -107,8 +107,8 @@ def create_dataset(train, dev, test):
     })
 
 if __name__ == '__main__':
-    train_file = '/content/Semantic_Relatedness_SemEval2024/Track A/amh/amh_train.csv'
-    test_file = '/content/Semantic_Relatedness_SemEval2024/Track A/amh/amh_dev.csv'
+    train_file = '../data/Track A/amh/amh_train.csv'
+    test_file = '../data/Track A/amh/amh_dev.csv'
 
     train_data = load_data(train_file, 'train')
     test_data = load_data(test_file, mode='test')
