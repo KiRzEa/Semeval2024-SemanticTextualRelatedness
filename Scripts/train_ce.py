@@ -8,8 +8,7 @@ from datetime import datetime
 
 from transformers import AutoModelForMaskedLM, AutoTokenizer
 from transformers import Trainer, TrainingArguments
-from load_data import load
-from datasets import load_dataset
+from load_data import *
 from sentence_transformers import LoggingHandler, util
 from sentence_transformers.cross_encoder import CrossEncoder
 from sentence_transformers.cross_encoder.evaluation import CECorrelationEvaluator
@@ -46,9 +45,18 @@ if __name__ == '__main__':
     num_train_epochs = args.num_train_epochs
     use_fp16 = args.use_fp16
     batch_size = args.batch_size
+    language = args.language
+    # Load data
+    if language:
+      languages = [language]
+    else:
+      languages = ['amh', 'arq', 'ary', 'eng', 'esp', 'hau', 'kin', 'mar', 'tel']
+      
+    train_data, dev_data, test_data = get_data(languages)
+    dataset = create_dataset(train_data, dev_data, test_data)
     
     # Train cross-encoder
-    train_samples, dev_samples, test_samples = load(dataset_name, str=True)
+    train_samples, dev_samples, test_samples = get_str_data(dataset, language=language)
     train_dataloader = DataLoader(train_samples, shuffle=True, batch_size=batch_size)
     
     evaluator = CECorrelationEvaluator.from_input_examples(dev_samples, name='sts-dev')
@@ -68,21 +76,20 @@ if __name__ == '__main__':
               epochs=num_train_epochs,
               warmup_steps=warmup_steps,
               evaluation_steps=256,
-              max_length=256,
+              max_length=512,
               use_amp=True,
               output_path='./saved/str')
     
     print("Training done")
     
-    os.makedirs(f'submission/{model_name}', exist_ok=True)
-    
-    dataset = load_dataset(dataset_name)
-    
-    languages = list(set(dataset['dev']['Language']))
-    
+    os.makedirs(f'submission/{model_name}/dev', exist_ok=True)
+    os.makedirs(f'submission/{model_name}/test', exist_ok=True)
+  
     for lang in languages:
         print("[INFO] Creating submission for: ", lang)
-        samples = get_examples(dataset, 'dev', lang)
-        predictions = model.predict(samples).tolist()
-        df = pd.DataFrame({'PairID': dataset['dev'].filter(lambda x: x['Language'] == lang)['PairID'], 'Pred_Score': predictions})
-        df.to_csv(f'submission/{model_name}/pred_{lang}_a.csv', index=False)
+        dev_samples = get_examples(dataset, 'dev', lang)
+        test_samples = get_examples(dataset, 'test', lang)
+        dev_predictions = model.predict(dev_samples).tolist()
+        test_predictions = model.predict(test_samples).tolist()
+        pd.DataFrame({'PairID': dataset['dev'].filter(lambda x: x['Language'] == lang)['PairID'], 'Pred_Score': dev_predictions}).to_csv(f'submission/{model_name}/dev/pred_{lang}_a.csv', index=False)
+        pd.DataFrame({'PairID': dataset['test'].filter(lambda x: x['Language'] == lang)['PairID'], 'Pred_Score': test_predictions}).to_csv(f'submission/{model_name}/test/pred_{lang}_a.csv', index=False)
