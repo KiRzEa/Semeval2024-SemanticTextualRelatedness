@@ -1,4 +1,3 @@
-# %%writefile load_data.py
 import pandas as pd
 import os
 import re
@@ -78,9 +77,9 @@ def get_data(languages):
   test_data_list = []
 
   for lang in languages:
-    train_path = f'Track A/{lang}/{lang}_train.csv'
-    dev_path = f'Track A/{lang}/{lang}_dev_with_labels.csv'
-    test_path = f'Track A/{lang}/{lang}_test.csv'
+    train_path = f'../data/Track A/{lang}/{lang}_train.csv'
+    dev_path = f'../data/Track A/{lang}/{lang}_dev_with_labels.csv'
+    test_path = f'../data/Track A/{lang}/{lang}_test.csv'
 
     train_data = pd.read_csv(train_path)
     dev_data = pd.read_csv(dev_path)
@@ -97,8 +96,8 @@ def get_data(languages):
   return whole_train_data, whole_dev_data, whole_test_data
 
 if __name__ == '__main__':
-    train_file = '/content/Semantic_Relatedness_SemEval2024/Track A/amh/amh_train.csv'
-    test_file = '/content/Semantic_Relatedness_SemEval2024/Track A/amh/amh_dev.csv'
+    train_file = '../data/Track A/amh/amh_train.csv'
+    test_file = '../data/Track A/amh/amh_dev_with_labels.csv'
 
     train_data = load_data(train_file, 'train')
     test_data = load_data(test_file, mode='test')
