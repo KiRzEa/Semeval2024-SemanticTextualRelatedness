@@ -82,8 +82,8 @@ def get_data(languages):
     test_path = f'Track A/{lang}/{lang}_test.csv'
 
     train_data = load_data(train_path, language=lang, mode='train')
-    dev_data = load_data(train_path, language=lang, mode='validation')
-    test_path = load_data(train_path, language=lang, mode='test')
+    dev_data = load_data(dev_path, language=lang, mode='validation')
+    test_data = load_data(test_path, language=lang, mode='test')
 
     train_data_list.append(train_data)
     dev_data_list.append(dev_data)
@@ -94,6 +94,17 @@ def get_data(languages):
   whole_test_data = pd.concat(test_data_list).reset_index().drop('index', axis='columns')
 
   return whole_train_data, whole_dev_data, whole_test_data
+
+def create_dataset(train, dev, test):
+    train_ds = Dataset.from_pandas(train)
+    dev_ds = Dataset.from_pandas(dev)
+    test_ds = Dataset.from_pandas(test)
+
+    return DatasetDict({
+        'train': train_ds,
+        'dev': dev_ds,
+        'test': test_ds
+    })
 
 if __name__ == '__main__':
     train_file = '/content/Semantic_Relatedness_SemEval2024/Track A/amh/amh_train.csv'
