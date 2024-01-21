@@ -77,9 +77,9 @@ def get_data(languages):
   test_data_list = []
 
   for lang in languages:
-    train_path = f'Track A/{lang}/{lang}_train.csv'
-    dev_path = f'Track A/{lang}/{lang}_dev_with_labels.csv'
-    test_path = f'Track A/{lang}/{lang}_test.csv'
+    train_path = f'../data/Track A/{lang}/{lang}_train.csv'
+    dev_path = f'../data/Track A/{lang}/{lang}_dev_with_labels.csv'
+    test_path = f'../data/Track A/{lang}/{lang}_test.csv'
 
     train_data = load_data(train_path, language=lang, mode='train')
     dev_data = load_data(dev_path, language=lang, mode='validation')
