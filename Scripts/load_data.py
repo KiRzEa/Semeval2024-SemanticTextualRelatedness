@@ -4,7 +4,7 @@ import re
 from sentence_transformers import InputExample
 from typing import Optional, Union
 from transformers import DataCollatorForLanguageModeling, DataCollatorForWholeWordMask
-from datasets import Dataset
+from datasets import Dataset, DatasetDict
 from torch.utils.data import DataLoader
 
 class TokenizedSentencesDataset:
