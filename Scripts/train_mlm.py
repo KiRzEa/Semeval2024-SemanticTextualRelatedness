@@ -26,7 +26,6 @@ if __name__ == '__main__':
     
     # Extract arguments
     model_name = args.model_name
-    dataset_name = args.dataset_name
     num_train_epochs = args.num_train_epochs
     use_fp16 = args.use_fp16
     batch_size = args.batch_size
