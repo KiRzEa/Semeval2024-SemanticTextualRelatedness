@@ -38,14 +38,14 @@ if __name__ == '__main__':
     
     model_name = model_name.split('/')[-1]
     output_dir = f"./saved/mlm/{model_name}"
-    max_length = 256
+    max_length = 512
     mlm_prob = 0.15
     
     languages = ['amh', 'arq', 'ary', 'eng', 'esp', 'hau', 'kin', 'mar', 'tel']
 
     train_data, _, _ = get_data(languages)
     
-    train_dataset, data_collator_fn = get_mlm_data(train_data, tokenizer=tokenizer, language=language)
+    train_dataset, data_collator_fn = get_mlm_data(train_data, tokenizer=tokenizer, language=language, max_length=max_length, mlm_prob=mlm_prob)
     
     training_args = TrainingArguments(
         output_dir=output_dir,
