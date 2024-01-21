@@ -5,9 +5,7 @@ import math
 
 from transformers import AutoModelForMaskedLM, AutoTokenizer
 from transformers import Trainer, TrainingArguments
-from load_data import load
-from datasets import load_dataset
-from torch.utils.data import DataLoader
+from load_data import *
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -32,6 +30,7 @@ if __name__ == '__main__':
     num_train_epochs = args.num_train_epochs
     use_fp16 = args.use_fp16
     batch_size = args.batch_size
+    language = args.language
     
     # Masked Language Modeling
     # Load the model
@@ -44,10 +43,10 @@ if __name__ == '__main__':
     mlm_prob = 0.15
     
     languages = ['amh', 'arq', 'ary', 'eng', 'esp', 'hau', 'kin', 'mar', 'tel']
+
+    train_data, _, _ = get_data(languages)
     
-    
-    
-    train_dataset, data_collator_fn = load(dataset_name, mlm=True, str=False, tokenizer=tokenizer, mlm_prob=mlm_prob, max_length=max_length, language=None)
+    train_dataset, data_collator_fn = get_mlm_data(train_data, tokenizer=tokenizer, language=language)
     
     training_args = TrainingArguments(
         output_dir=output_dir,
