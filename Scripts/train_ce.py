@@ -32,6 +32,7 @@ def parse_arguments():
     parser.add_argument("--use_fp16", action="store_true", help="Use FP16 for training if supported.")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size for MLM training.")
     parser.add_argument("--language", default=None, help="Choose a specific language to train.")
+    parser.add_argument("--mlm", default=True, help="Whether the chosen was continual pretrained.")
     # parser.add_argument("--save_model_path", required=True, help="Save path")
     
     return parser.parse_args()
@@ -59,10 +60,12 @@ if __name__ == '__main__':
     
     evaluator = CECorrelationEvaluator.from_input_examples(dev_samples, name='sts-dev')
     
-    # Get model
-    model_name = model_name.split('/')[-1]
-    model = CrossEncoder(f'./saved/mlm/{model_name}', max_length=512, num_labels=1)
-    
+    # Get model   
+    if mlm:
+        model_name = model_name.split('/')[-1]
+        model = CrossEncoder(f'./saved/mlm/{model_name}', max_length=512, num_labels=1)
+    else:
+        model = CrossEncoder(model_name, max_length=512, num_labels=1)
     # Configure the training
     warmup_steps = math.ceil(len(train_dataloader) * num_train_epochs * 0.1) #10% of train data for warm-up
     logger.info("Warmup-steps: {}".format(warmup_steps))
