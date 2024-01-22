@@ -45,6 +45,7 @@ if __name__ == '__main__':
     use_fp16 = args.use_fp16
     batch_size = args.batch_size
     language = args.language
+    mlm = args.mlm
     # Load data
     if language:
       languages = [language]
