@@ -61,7 +61,7 @@ if __name__ == '__main__':
     
     # Get model
     model_name = model_name.split('/')[-1]
-    model = CrossEncoder(f'./saved/mlm/{model_name}', num_labels=1)
+    model = CrossEncoder(f'./saved/mlm/{model_name}', max_length=512, num_labels=1)
     
     # Configure the training
     warmup_steps = math.ceil(len(train_dataloader) * num_train_epochs * 0.1) #10% of train data for warm-up
@@ -74,7 +74,6 @@ if __name__ == '__main__':
               epochs=num_train_epochs,
               warmup_steps=warmup_steps,
               evaluation_steps=256,
-              max_length=512,
               use_amp=True,
               output_path='./saved/str')
     
