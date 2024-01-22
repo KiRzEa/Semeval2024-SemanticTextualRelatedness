@@ -85,6 +85,7 @@ if __name__ == '__main__':
     for lang in languages:
         print("[INFO] Creating submission for: ", lang)
         dev_samples = get_examples(dataset, 'dev', lang)
+        dev_samples = [sample.texts for sample in dev_samples]
         test_samples = get_examples(dataset, 'test', lang)
         dev_predictions = model.predict(dev_samples).tolist()
         test_predictions = model.predict(test_samples).tolist()
