@@ -79,7 +79,7 @@ if __name__ == '__main__':
               warmup_steps=warmup_steps,
               evaluation_steps=256,
               use_amp=True,
-              output_path='./saved/str')
+              output_path=output_path)
     
     print("Training done")
     
