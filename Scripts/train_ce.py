@@ -71,7 +71,7 @@ if __name__ == '__main__':
     warmup_steps = math.ceil(len(train_dataloader) * num_train_epochs * 0.1) #10% of train data for warm-up
     logger.info("Warmup-steps: {}".format(warmup_steps))
     
-    
+    output_path = './saved/str/{model_name}' if mlm else './saved/str/{model_name.split('/')[-1]}'
     # Train the model
     model.fit(train_dataloader=train_dataloader,
               evaluator=evaluator,
