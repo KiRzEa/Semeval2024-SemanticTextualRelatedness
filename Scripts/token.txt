@@ -1,0 +1,1 @@
+git clone https://KiRzEa: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@github.com/KiRzEa/Semeval2024-SemanticTextualRelatedness.git
