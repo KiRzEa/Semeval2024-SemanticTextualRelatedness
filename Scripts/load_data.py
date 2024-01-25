@@ -24,7 +24,7 @@ class TokenizedSentencesDataset:
     def __len__(self):
         return len(self.sentences)
 
-def get_examples(dataset, split, language=None):
+def get_examples(dataset, split, language=None, inference:bool=False):
     samples = []
 
     if language:
@@ -32,8 +32,11 @@ def get_examples(dataset, split, language=None):
 
     for example in dataset[split]:
         if split == 'train':
-            samples.append(InputExample(texts=example['Pair'], label=example['Score']))
-            samples.append(InputExample(texts=example['Pair'], label=example['Score']))
+            if inference:
+                samples.append(example['Pair'])
+            else:
+                samples.append(InputExample(texts=example['Pair'], label=example['Score']))
+                samples.append(InputExample(texts=example['Pair'], label=example['Score']))
         elif split == 'dev':
             samples.append(InputExample(texts=example['Pair'], label=example['Score']))
         else:
